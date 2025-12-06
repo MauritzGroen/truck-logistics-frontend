@@ -82,13 +82,13 @@ const SmartDropdown: FC<SmartDropdownProps> = ({
         }
     };
 
-    // --- effects ---------------------------------------------------------------
+    // ---- effects ---------------------------------------------------------------
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         const loaded = loadOptionsFromStorage();
         setStoredOptions(loaded);
-    }, [storageKey]);   // <– note: [storageKey], not []
+    }, []);  // IMPORTANT
 
     // Sync internal input with parent value
     useEffect(() => {
@@ -98,10 +98,7 @@ const SmartDropdown: FC<SmartDropdownProps> = ({
     // Close dropdown on outside click
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
-            if (
-                containerRef.current &&
-                !containerRef.current.contains(e.target as Node)
-            ) {
+            if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
                 setIsOpen(false);
             }
         };
