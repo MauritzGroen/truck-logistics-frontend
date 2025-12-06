@@ -84,6 +84,7 @@ const SmartDropdown: FC<SmartDropdownProps> = ({
 
     // ---- effects ---------------------------------------------------------------
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         const loaded = loadOptionsFromStorage(storageKey);
         setStoredOptions(loaded);
