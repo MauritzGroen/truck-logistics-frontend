@@ -12,7 +12,6 @@ import TransporterDetails from "./TransporterDetails";
 
 import {
     CreateOrderPayload,
-    CreateDeliveryPayload,
     getOrders,
     createOrder,
     updateOrder,
@@ -65,28 +64,29 @@ interface Delivery {
     receiptRemarks: string;
 }
 
-function mapApiDeliveryRowToDelivery(row: ApiDeliveryRow): Delivery {
-    return {
-        id: row.id,
-        orderId: row.order_id,
-        deliveryDate: row.delivery_date,
-        deliveredQtyTons: Number(row.delivered_qty_tons),
+// function mapApiDeliveryRowToDelivery(row: ApiDeliveryRow): Delivery {
+//     return {
+//         id: row.id,
+//         orderId: row.order_id,
+//         deliveryDate: row.delivery_date,
+//         deliveredQtyTons: Number(row.delivered_qty_tons),
 
-        contractorName: row.contractor_name ?? "",
-        truckNumber: row.truck_number ?? "",
-        trailer1Number: row.trailer1_number ?? "",
-        trailer2Number: row.trailer2_number ?? "",
-        driverName: row.driver_name ?? "",
-        driverIdNumber: row.driver_id_number ?? "",
-        driverCell: row.driver_cell ?? "",
-        loadingAddress: row.loading_address ?? "",
-        loadingNumber: row.loading_number ?? "",
-        loadingDatetime: row.loading_datetime ?? "",
-        receiptDate: row.receipt_date ?? "",
-        receiptRemarks: row.receipt_remarks ?? "",
-        receiptNumber: "",
-    };
-}
+//         contractorName: row.contractor_name ?? "",
+//         truckNumber: row.truck_number ?? "",
+//         trailer1Number: row.trailer1_number ?? "",
+//         trailer2Number: row.trailer2_number ?? "",
+//         driverName: row.driver_name ?? "",
+//         driverIdNumber: row.driver_id_number ?? "",
+//         driverCell: row.driver_cell ?? "",
+//         loadingAddress: row.loading_address ?? "",
+//         loadingNumber: row.loading_number ?? "",
+//         loadingDatetime: row.loading_datetime ?? "",
+//         receiptDate: row.receipt_date ?? "",
+//         receiptRemarks: row.receipt_remarks ?? "",
+//         receiptNumber: "",
+//     };
+// }
+
 
 // ==== API → App mapping for Orders ====
 
@@ -105,20 +105,20 @@ type ApiOrderRow = {
     order_date: string;
 };
 
-const mapRowToOrder = (row: ApiOrderRow): Order => ({
-    id: row.id,
-    orderNumber: row.order_number,
-    supplierName: row.supplier_name,
-    supplierContactPerson: row.supplier_contact_person ?? "",
-    supplierContactPhone: row.supplier_contact_phone ?? "",
-    supplierEmail: row.supplier_email ?? "",
-    sku: row.sku ?? "",
-    packagingType: row.packaging_type ?? "",
-    orderedQtyTons: Number(row.ordered_qty_tons || "0"),
-    deliveredQtyTons: Number(row.delivered_qty_tons || "0"),
-    status: row.status as OrderStatus,
-    orderDate: row.order_date,
-});
+// const mapRowToOrder = (row: ApiOrderRow): Order => ({
+//     id: row.id,
+//     orderNumber: row.order_number,
+//     supplierName: row.supplier_name,
+//     supplierContactPerson: row.supplier_contact_person ?? "",
+//     supplierContactPhone: row.supplier_contact_phone ?? "",
+//     supplierEmail: row.supplier_email ?? "",
+//     sku: row.sku ?? "",
+//     packagingType: row.packaging_type ?? "",
+//     orderedQtyTons: Number(row.ordered_qty_tons || "0"),
+//     deliveredQtyTons: Number(row.delivered_qty_tons || "0"),
+//     status: row.status as OrderStatus,
+//     orderDate: row.order_date,
+// });
 
 // ==== API <-> App mapping for Deliveries ====
 
@@ -200,7 +200,7 @@ interface DeliveryFormState {
 const STORAGE_KEY_ORDERS = "truckLogistics.orders";
 const STORAGE_KEY_DELIVERIES = "truckLogistics.deliveries";
 
-const generateId = (): string => Math.random().toString(36).slice(2);
+// const generateId = (): string => Math.random().toString(36).slice(2);
 
 const todayDate = (): string => new Date().toISOString().slice(0, 10);
 
@@ -258,25 +258,25 @@ const row4Style = (bg: string): CSSProperties => ({
     marginBottom: "0.8rem",
 });
 
-const row3Style = (bg: string): CSSProperties => ({
-    display: "grid",
-    gridTemplateColumns: "repeat(3, minmax(200px, 1fr))",
-    gap: "0.6rem",
-    backgroundColor: bg,
-    padding: "0.7rem 0.8rem",
-    borderRadius: 4,
-    marginBottom: "0.8rem",
-});
+// const row3Style = (bg: string): CSSProperties => ({
+//     display: "grid",
+//     gridTemplateColumns: "repeat(3, minmax(200px, 1fr))",
+//     gap: "0.6rem",
+//     backgroundColor: bg,
+//     padding: "0.7rem 0.8rem",
+//     borderRadius: 4,
+//     marginBottom: "0.8rem",
+// });
 
-const rowAutoStyle = (bg: string): CSSProperties => ({
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))",
-    gap: "0.6rem",
-    backgroundColor: bg,
-    padding: "0.7rem 0.8rem",
-    borderRadius: 4,
-    marginBottom: "0.8rem",
-});
+// const rowAutoStyle = (bg: string): CSSProperties => ({
+//     display: "grid",
+//     gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))",
+//     gap: "0.6rem",
+//     backgroundColor: bg,
+//     padding: "0.7rem 0.8rem",
+//     borderRadius: 4,
+//     marginBottom: "0.8rem",
+// });
 
 // ---------- PRINT / EXPORT HELPERS ----------
 
