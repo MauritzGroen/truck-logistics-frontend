@@ -84,11 +84,10 @@ const SmartDropdown: FC<SmartDropdownProps> = ({
 
     // --- effects -------------------------------------------------------------
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         const loaded = loadOptionsFromStorage();
         setStoredOptions(loaded);
-    }, [storageKey]);
+    }, []); // run once on mount
 
     // Sync internal input with parent value
     useEffect(() => {
