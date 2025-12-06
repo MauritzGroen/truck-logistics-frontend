@@ -90,6 +90,7 @@ interface Delivery {
 
 // ==== API → App mapping for Orders ====
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type ApiOrderRow = {
     id: string;
     order_number: string;
