@@ -25,6 +25,38 @@ interface SmartDropdownProps {
 }
 
 /**
+ * Normalize a list of strings:
+ * - trim
+ * - drop empty
+ * - make unique
+ * - sort alphabetically
+ */
+const normalizeList = (rawList: string[]): string[] => {
+    const cleaned = rawList
+        .map((v) => (v ?? "").trim())
+        .filter((v) => v.length > 0);
+
+    const unique = Array.from(new Set(cleaned));
+    unique.sort((a, b) => a.localeCompare(b));
+    return unique;
+};
+
+/**
+ * Read options from localStorage for a given storageKey.
+ * Safe (catches JSON / storage errors) and returns [] on failure.
+ */
+const loadOptionsFromStorage = (storageKey: string): string[] => {
+    try {
+        const raw = localStorage.getItem(storageKey);
+        if (!raw) return [];
+        const arr = JSON.parse(raw) as string[];
+        return normalizeList(arr);
+    } catch {
+        return [];
+    }
+};
+
+/**
  * SmartDropdown
  *
  * - Text input with history-backed dropdown (localStorage)
@@ -49,29 +81,6 @@ const SmartDropdown: FC<SmartDropdownProps> = ({
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const containerRef = useRef<HTMLDivElement | null>(null);
 
-    // --- helpers -------------------------------------------------------------
-
-    const normalizeList = (rawList: string[]): string[] => {
-        const cleaned = rawList
-            .map((v) => (v ?? "").trim())
-            .filter((v) => v.length > 0);
-
-        const unique = Array.from(new Set(cleaned));
-        unique.sort((a, b) => a.localeCompare(b));
-        return unique;
-    };
-
-    const loadOptionsFromStorage = (): string[] => {
-        try {
-            const raw = localStorage.getItem(storageKey);
-            if (!raw) return [];
-            const arr = JSON.parse(raw) as string[];
-            return normalizeList(arr);
-        } catch {
-            return [];
-        }
-    };
-
     const saveOptionsToStorage = (list: string[]) => {
         const normalized = normalizeList(list);
         setStoredOptions(normalized);
@@ -82,26 +91,32 @@ const SmartDropdown: FC<SmartDropdownProps> = ({
         }
     };
 
-    // ---- effects ---------------------------------------------------------------
+    // ---- effects -----------------------------------------------------------
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // Load once on mount + when storageKey changes
     useEffect(() => {
         const loaded = loadOptionsFromStorage(storageKey);
         setStoredOptions(loaded);
     }, [storageKey]);
 
+    // Sync internal input with parent value
     useEffect(() => {
         setInputValue(value ?? "");
     }, [value]);
 
+    // Close dropdown on outside click
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
-            if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+            if (
+                containerRef.current &&
+                !containerRef.current.contains(e.target as Node)
+            ) {
                 setIsOpen(false);
             }
         };
         document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
+        return () =>
+            document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
     // --- derived state -------------------------------------------------------
@@ -115,7 +130,9 @@ const SmartDropdown: FC<SmartDropdownProps> = ({
     const filteredOptions = useMemo(() => {
         const term = inputValue.trim().toLowerCase();
         if (!term) return allOptions;
-        return allOptions.filter((opt) => opt.toLowerCase().includes(term));
+        return allOptions.filter((opt) =>
+            opt.toLowerCase().includes(term)
+        );
     }, [allOptions, inputValue]);
 
     // --- handlers ------------------------------------------------------------
@@ -251,7 +268,9 @@ const SmartDropdown: FC<SmartDropdownProps> = ({
                                     <button
                                         type="button"
                                         style={deleteButtonStyle}
-                                        onClick={(e) => handleDeleteOption(opt, e)}
+                                        onClick={(e) =>
+                                            handleDeleteOption(opt, e)
+                                        }
                                         title="Remove from list"
                                     >
                                         ✕
